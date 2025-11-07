@@ -35,7 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const boton = document.createElement("button");
     boton.className = "cara-btn";
     boton.dataset.value = nivel.valor;
-    boton.innerHTML = `<img src="assets/${nivel.imagen}" alt="${nivel.etiqueta}" />`;
+    const baseUrl = "https://elsixortiz.github.io/encuesta-vw";
+boton.innerHTML = `<img src="${baseUrl}/assets/${nivel.imagen}" alt="${nivel.etiqueta}" />`;
     caritasContainer.appendChild(boton);
   });
 
