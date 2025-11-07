@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Encuesta VW</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="content" id="panel-preguntas">
+      <h1 id="pregunta-texto">¿Qué te pareció la organización del Summit de Usados 2025?</h1>
+      <div class="botones-caritas" id="caritas-container"></div>
+    </div>
+
+    <div class="content" id="panel-comentarios" style="display: none;">
+      <h1>¿Tienes algún comentario o sugerencia?</h1>
+      <textarea id="comentarios-input" placeholder="Escribe aquí tu opinión..."></textarea>
+      <button id="enviar-comentarios">Enviar</button>
+    </div>
+
+    <div class="mensaje-final" id="mensaje-final" style="display: none;">
+      <p>Agradecemos tu opinión</p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
