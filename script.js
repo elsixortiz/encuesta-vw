@@ -1,7 +1,7 @@
-// 🔗 Reemplaza ESTA URL con la tuya de Google Apps Script
+// 🔗 URL de tu Google Apps Script
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzEYkpjiQt-Gd76Sve9oZPzc74bVCTwsYM4vCsRG7P8pG6Bhase35rGCGohKQQkk9GM/exec";
 
-// Preguntas de satisfacción (ahora 5)
+// Preguntas de satisfacción (5)
 const preguntasSatisfaccion = [
   "¿Qué te pareció la organización del Summit de Usados 2025?",
   "¿Cómo calificarías la calidad del contenido del Summit de Usados 2025?",
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const comentariosInput = document.getElementById("comentarios-input");
   const enviarComentariosBtn = document.getElementById("enviar-comentarios");
 
-  // Generar botones de caritas
+  // ✅ Generar botones de caritas (con rutas relativas simples)
   niveles.forEach(nivel => {
     const boton = document.createElement("button");
     boton.className = "cara-btn";
@@ -42,35 +42,30 @@ document.addEventListener("DOMContentLoaded", () => {
   // Mostrar primera pregunta
   mostrarPregunta();
 
-  // Forzar que solo se muestre el panel de preguntas al inicio
+  // Forzar visibilidad correcta al inicio
   panelComentarios.style.display = "none";
   mensajeFinal.style.display = "none";
   panelPreguntas.style.display = "block";
 
   // Eventos para caritas
-  caritasContainer.addEventListener("click", async (e) => {
+  caritasContainer.addEventListener("click", (e) => {
     if (e.target.closest(".cara-btn")) {
       const boton = e.target.closest(".cara-btn");
       const respuesta = boton.dataset.value;
 
-      // Enviar a Google Sheets en segundo plano
+      // Enviar en segundo plano (sin await)
       fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
         mode: "no-cors",
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: `pregunta=${encodeURIComponent(preguntasSatisfaccion[indicePregunta])}&respuesta=${encodeURIComponent(respuesta)}&dispositivo=tablet`
-      }).catch(e => {
-        console.warn("No se pudo enviar a Google Sheets (puede ser normal por no-cors)");
-      });
+      }).catch(() => {});
 
-      // Avanzar a siguiente pregunta
+      // Avanzar
       indicePregunta++;
       if (indicePregunta < preguntasSatisfaccion.length) {
         mostrarPregunta();
       } else {
-        // Mostrar panel de comentarios
         panelPreguntas.style.display = "none";
         panelComentarios.style.display = "block";
         comentariosInput.focus();
@@ -78,27 +73,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Evento para enviar comentarios
-  enviarComentariosBtn.addEventListener("click", async () => {
+  // Enviar comentarios
+  enviarComentariosBtn.addEventListener("click", () => {
     const comentarios = comentariosInput.value.trim();
 
-    // Enviar comentarios a Google Sheets
     fetch(GOOGLE_SCRIPT_URL, {
       method: "POST",
       mode: "no-cors",
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `pregunta=${encodeURIComponent("Comentarios del cliente")}&respuesta=${encodeURIComponent(comentarios)}&dispositivo=tablet`
-    }).catch(e => {
-      console.warn("No se pudieron enviar los comentarios a Google Sheets");
-    });
+    }).catch(() => {});
 
     // Mostrar mensaje final
     panelComentarios.style.display = "none";
     mensajeFinal.style.display = "flex";
 
-    // Reiniciar después de 3 segundos
+    // Reiniciar
     setTimeout(() => {
       indicePregunta = 0;
       comentariosInput.value = "";
